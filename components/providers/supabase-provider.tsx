@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/types/supabase";
 
@@ -18,7 +17,6 @@ export default function SupabaseProvider({
   children: React.ReactNode;
 }) {
   const [supabase] = useState(() => createClient());
-  const router = useRouter();
 
   return <Context.Provider value={{ supabase }}>{children}</Context.Provider>;
 }
