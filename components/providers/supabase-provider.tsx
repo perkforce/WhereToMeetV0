@@ -1,10 +1,16 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { Database } from "@/types/supabase";
 
-const Context = createContext<any>({});
+type SupabaseContext = {
+  supabase: SupabaseClient<Database>;
+};
+
+const Context = createContext<SupabaseContext | undefined>(undefined);
 
 export default function SupabaseProvider({
   children,
@@ -13,18 +19,6 @@ export default function SupabaseProvider({
 }) {
   const [supabase] = useState(() => createClient());
   const router = useRouter();
-
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-      router.refresh();
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [supabase, router]);
 
   return <Context.Provider value={{ supabase }}>{children}</Context.Provider>;
 }
