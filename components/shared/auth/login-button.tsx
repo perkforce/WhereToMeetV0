@@ -7,10 +7,13 @@ export function LoginButton() {
   const { supabase } = useSupabase();
 
   const handleLogin = async () => {
+    const redirectTo =
+      process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${redirectTo}/auth/callback`,
         scopes: "email profile",
       },
     });
