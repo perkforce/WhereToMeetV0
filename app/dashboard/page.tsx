@@ -15,7 +15,7 @@ export default async function DashboardPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Welcome!</h1>
-      <p>You're signed in as {session.user.email}</p>
+      <p>You&apos;re signed in as {session.user.email}</p>
     </div>
   );
 }
