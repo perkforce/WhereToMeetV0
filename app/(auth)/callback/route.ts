@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
     if (user) {
       // Store user data
-      await supabase.from('users').upsert({
+      await supabase.from('WhereToMeetUsers').upsert({
         id: user.id,
         email: user.email,
         last_sign_in: new Date().toISOString()
@@ -20,5 +20,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.redirect(new URL('/', requestUrl.origin))
+  return NextResponse.redirect(new URL('/dashboard', requestUrl.origin))
 } 
