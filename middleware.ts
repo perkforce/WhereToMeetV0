@@ -7,15 +7,12 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient({ req, res })
   const { data: { session } } = await supabase.auth.getSession()
 
-  // Auth routes handling (now using the route group path)
-  if (req.nextUrl.pathname.startsWith('/login')) {
-    if (session) {
-      return NextResponse.redirect(new URL('/', req.url))
-    }
-    return res
+  // Redirect authenticated users from login to dashboard
+  if (req.nextUrl.pathname.startsWith('/login') && session) {
+    return NextResponse.redirect(new URL('/dashboard', req.url))
   }
 
-  // Protected routes handling
+  // Redirect unauthenticated users to login
   if (!session && !req.nextUrl.pathname.startsWith('/login')) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
@@ -25,6 +22,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|callback).*)',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 } 

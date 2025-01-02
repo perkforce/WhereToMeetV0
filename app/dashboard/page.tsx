@@ -8,8 +8,8 @@ export default async function DashboardPage() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session) {
-    redirect("/login");
+  if (session) {
+    redirect("/dashboard");
   }
 
   return (
