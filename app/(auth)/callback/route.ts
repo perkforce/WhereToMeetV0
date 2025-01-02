@@ -8,17 +8,9 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = createRouteHandlerClient({ cookies })
-    const { data: { user } } = await supabase.auth.exchangeCodeForSession(code)
-
-    if (user) {
-      // Store user data
-      await supabase.from('WhereToMeetUsers').upsert({
-        id: user.id,
-        email: user.email,
-        last_sign_in: new Date().toISOString()
-      })
-    }
+    await supabase.auth.exchangeCodeForSession(code)
   }
 
+  // Redirect to dashboard after successful authentication
   return NextResponse.redirect(new URL('/dashboard', requestUrl.origin))
 } 

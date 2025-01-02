@@ -7,13 +7,13 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient({ req, res })
   const { data: { session } } = await supabase.auth.getSession()
 
-  // Redirect authenticated users from login to dashboard
+  // Redirect authenticated users to dashboard
   if (req.nextUrl.pathname.startsWith('/login') && session) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
 
-  // Redirect unauthenticated users to login
-  if (!session && !req.nextUrl.pathname.startsWith('/login')) {
+  // Protect dashboard route
+  if (!session && req.nextUrl.pathname.startsWith('/dashboard')) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
